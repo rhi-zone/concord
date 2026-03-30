@@ -4,29 +4,26 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 export default withMermaid(
   defineConfig({
     title: "concord",
-    description: "Type-safe API bindings for Rust",
+    description: "API bindings IR and codegen",
     base: "/concord/",
     themeConfig: {
       nav: [
         { text: "Guide", link: "/guide/" },
-        { text: "API Reference", link: "/api/" },
-        { text: "RHI", link: "https://rhi.zone/" },
+        { text: "IR Design", link: "/design/ir" },
+        { text: "rhi", link: "https://rhi.zone/" },
       ],
       sidebar: {
-        "/guide/": [
+        "/": [
           {
-            text: "Getting Started",
+            text: "Guide",
             items: [
               { text: "Introduction", link: "/guide/" },
-              { text: "Installation", link: "/guide/installation" },
             ],
           },
           {
-            text: "Bindings",
+            text: "Design",
             items: [
-              { text: "Web APIs", link: "/guide/web-apis" },
-              { text: "OpenAPI", link: "/guide/openapi" },
-              { text: "FFI", link: "/guide/ffi" },
+              { text: "IR Reference", link: "/design/ir" },
             ],
           },
         ],

@@ -24,7 +24,7 @@ struct Type {
 }
 
 enum TypeKind {
-    Ref(String),                          // reference to named type
+    Ref { name: String },                 // reference to named type
     Struct { fields: Vec<Field> },
     Enum { variants: Vec<Variant> },
     Function { params: Vec<Param>, ret: Box<Type> },
@@ -128,7 +128,7 @@ enum Value {
     Number(f64),
     String(String),
     List(Vec<Value>),
-    Object(HashMap<String, Value>),
+    Object(IndexMap<String, Value>),
 }
 ```
 
@@ -244,24 +244,28 @@ enum Item {
 ```rust
 struct Metadata {
     docs: Option<String>,
-    source_location: Option<SourceLocation>,
-    confidence: Option<f32>,      // for assisted generation
-    extra: HashMap<String, Value>, // escape hatch
+    source: Option<SourceLocation>,
+    confidence: Option<f32>,            // for assisted generation
+    extra: IndexMap<String, Value>,     // escape hatch (preserves insertion order)
 }
 ```
 
 ## Decisions
 
-- **Interning**: Yes - types should be interned for deduplication and fast comparison.
+- **Serialization**: The IR serializes to JSON and YAML via serde. `TypeKind` uses an internal `kind` tag. `AnnotationValue` and `Value` are untagged (shape-based discrimination). `Metadata` fields are skipped when empty to keep output compact.
+- **`IndexMap` for ordering**: `Metadata.extra` and `Value::Object` use `IndexMap` to preserve insertion order — important for schema fields where declaration order is meaningful.
+- **Serde field rename**: `typ` fields serialize as `"type"` to avoid Rust keyword collision.
 
 ## Open Questions
 
 - **Validation layer**: When/how to validate annotation kinds and values?
 - **Versioning**: How to handle API versions in IR?
 - **Streaming**: How to represent streaming responses / async generators?
+- **Interning**: Should types be interned for deduplication and fast comparison? Not implemented yet.
 
 ## Deferred
 
-- **Specialcases format**: Design when we hit real pain points
+- **Special-case format**: Design when we hit real pain points
 - **Confidence scoring**: Design when we hit ambiguous cases in parsing
 - **C preprocessor strategy**: Defer until FFI parser implementation
+- **FFI parser**: Planned; no implementation yet

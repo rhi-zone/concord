@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: concord
-  tagline: Type-safe API bindings for Rust
+  tagline: API bindings IR and codegen
   actions:
     - theme: brand
       text: Get Started
@@ -11,12 +11,12 @@ hero:
       text: View on GitHub
       link: https://github.com/rhi-zone/concord
 features:
-  - title: Web APIs
-    details: Type-safe bindings to browser and web platform APIs
-  - title: OpenAPI
-    details: Auto-generated clients from OpenAPI schemas
-  - title: FFI
-    details: Foreign function interface bindings for native libraries
-  - title: Backend Agnostic
-    details: Works with any async runtime and HTTP client
+  - title: Unified IR
+    details: One intermediate representation for HTTP APIs, FFI, and future sources. All information preserved — generators decide how to map.
+  - title: OpenAPI Parser
+    details: Parse OpenAPI 3.x schemas (JSON or YAML) into the concord IR, capturing types, endpoints, parameters, and response schemas.
+  - title: Rust Codegen
+    details: Generate idiomatic Rust structs, enums, type aliases, and async function stubs from the IR. Serde derives included.
+  - title: Extensible Annotations
+    details: Bounds, constraints, HTTP semantics, and FFI calling conventions are all annotations — no hardcoded special cases.
 ---
