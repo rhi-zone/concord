@@ -34,6 +34,12 @@
 ## Complexity Hotspots (threshold >21)
 - [ ] `crates/concord-codegen/src/generator/rust.rs:to_snake_case` (34)
 
+## Ad-hoc dispatch findings (2026-05-29)
+
+From an ecosystem-wide investigation of ad-hoc dispatch architecture (2026-05-29). The recurring anti-pattern: N parallel dispatch tables keyed on a closed name/enum set where one registry/trait/visitor belongs — strongest tell is DRIFT (parallel tables disagreeing).
+
+- **Forward note (hypothesis, not a current finding):** `concord-codegen/src/generator/mod.rs` currently has `pub mod rust;` only — one generator, no shared `Generator` trait. When a second generator is added (TypeScript, Python — already planned above), `TypeKind`-dispatch will naturally duplicate without a common trait boundary to enforce consistency. The `Generator` trait boundary should precede the second generator, not follow it. Adding it now (while there is only one impl to adjust) costs one trait definition; adding it after drift sets in costs a refactor.
+
 ## Future Ideas
 
 - Web APIs: fetch, WebSocket, etc.
