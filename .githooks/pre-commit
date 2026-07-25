@@ -5,8 +5,12 @@
 
 set -e
 
-echo "Running cargo fmt check..."
-cargo fmt --check
+staged=$(git diff --cached --name-only)
+echo "Running cargo fmt..."
+cargo fmt
+if [ -n "$staged" ]; then
+  echo "$staged" | xargs git add
+fi
 
 echo "Running cargo clippy..."
 cargo clippy --workspace --all-targets -- -D warnings 2>/dev/null || {
