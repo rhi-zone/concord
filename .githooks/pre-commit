@@ -5,7 +5,7 @@
 
 set -e
 
-staged=$(git diff --cached --name-only)
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
 echo "Running cargo fmt..."
 cargo fmt
 if [ -n "$staged" ]; then
